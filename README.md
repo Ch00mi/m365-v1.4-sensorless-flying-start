@@ -3,6 +3,7 @@
 > **PUBLICATION NOTE:** This repository intentionally excludes experimental firmware source ZIPs and externally sourced hardware/schematic images until their upstream licensing/provenance is confirmed. See `LEGAL_PUBLICATION_NOTES.md`.
 
 > **Status:** experimental research project, paused after test-controller / ST-Link hardware damage.  
+> **Last confirmed hardware-tested firmware:** `FIX13_FINE_GAIN_1650_1700`. See `docs/LAST_TESTED_FIRMWARE.md`.  
 > **Last technical milestone:** passive BEMF amplitude calibration was identified as the next blocking task (`FIX14_PASSIVE_BEMF_CAL`).  
 > **Not yet demonstrated:** continuous zero-current sensorless takeover into stable FOC and PAS torque ramp.
 
@@ -148,6 +149,7 @@ See `docs/HARDWARE_AND_SIGNAL_CHAIN.md`.
 
 - `docs/ENGINEERING_REPORT.md` — full project narrative and conclusions.
 - `docs/FIRMWARE_LINEAGE.md` — evolution from passive voltage test to FIX14.
+- `docs/LAST_TESTED_FIRMWARE.md` — exact identity, hashes and status of the final confirmed FIX13 build and untested FIX14 continuation.
 - `docs/HARDWARE_AND_SIGNAL_CHAIN.md` — motor, ADC and PWM chain.
 - `docs/LIVE_EXPRESSIONS_REFERENCE.md` — diagnostic variable glossary.
 - `docs/TEST_RESULTS.md` — interpreted experimental results.
@@ -186,9 +188,9 @@ FIX11 angle-offset calibration
         ↓
 FIX12 fine voltage-gain calibration
         ↓
-FIX13 1650/1700 fine gain + trace analysis
+FIX13 1650/1700 fine gain + trace analysis  ← last hardware-tested
         ↓
-FIX14 PASSIVE BEMF ABSOLUTE CALIBRATION  ← resume here
+FIX14 PASSIVE BEMF ABSOLUTE CALIBRATION   ← generated continuation; resume here
 ```
 
 ## Safety note for future work
@@ -241,6 +243,6 @@ For community value, publish:
 1. `forum/ENDLESS_SPHERE_POST.md` as the main readable project log.
 2. This README and `docs/` as the durable engineering record.
 3. `data/` so other developers can independently analyze the test series.
-4. Firmware snapshots only after checking the upstream project's license and attribution requirements.
+4. Firmware snapshots only after the upstream motor-control library's license is clarified.
 
 The most useful part of this project is not a claim that "it works"; it is the sequence of measurements showing **which hypotheses were eliminated and why**.
