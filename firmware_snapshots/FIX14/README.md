@@ -2,25 +2,15 @@
 
 Status: **generated continuation, not hardware-validated**.
 
-FIX14 was generated after FIX13 to test the suspected absolute BEMF amplitude scaling error before attempting another active handoff.
+FIX14 follows the published, hardware-tested FIX13 snapshot. This directory contains the original FIX14 test notes plus exact unified diffs for the two modified source files:
 
-Reference archive identity:
+- `FIX13_to_FIX14_motor.patch` — `Core/Src/motor.c`
+- `FIX13_to_FIX14_config.patch` — `Core/Inc/config.h`
+- `README_FIX14.txt` — original snapshot notes
 
-- Archive: `GreenMover_ACTIVE_HANDOFF_TEST1_FIX14_PASSIVE_BEMF_CAL.zip`
-- SHA256: `63c3435c701afff65e21fb0bc87c8b2d73b4653085ed9670d27ba2b5d60bd3ae`
+Original archive identity:
 
-The original ZIP is preserved locally. In this repository FIX14 is represented as the exact source delta from the published, hash-verified FIX13 snapshot, so the control-code changes are directly reviewable.
+- `GreenMover_ACTIVE_HANDOFF_TEST1_FIX14_PASSIVE_BEMF_CAL.zip`
+- SHA256 `63c3435c701afff65e21fb0bc87c8b2d73b4653085ed9670d27ba2b5d60bd3ae`
 
-Main changes:
-
-- `PV_PHASE_NOMINAL_FULL_SCALE_MV = 15400`
-- `PV_PHASE_CAL_GAIN_PERMILLE = 2520`
-- active handoff voltage-scale sweep locked to `1000` permille
-- added diagnostics:
-  - `pv_dbg_phase_cal_permille`
-  - `pv_dbg_mag_permille`
-  - `pv_dbg_ll_rms_est_mv`
-- passive phase-voltage reconstruction now applies the calibration gain before common-mode removal / Clarke transform
-- intended validation: compare DMM line-line RMS against `pv_dbg_ll_rms_est_mv` around 40, 60 and 80 mechanical rpm
-
-Apply both patches in this directory to the FIX13 source tree to reproduce the FIX14 source changes.
+Apply both patches to the FIX13 source tree to reproduce the FIX14 source changes. FIX14 should first be validated passively against DMM line-line RMS measurements before any active handoff testing.
