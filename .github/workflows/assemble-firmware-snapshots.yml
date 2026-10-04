@@ -1,9 +1,10 @@
-name: Assemble firmware snapshots
+name: Assemble FIX13 firmware snapshot
 
 on:
   push:
     paths:
-      - 'firmware_snapshots/.transfer/**'
+      - 'firmware_snapshots/.transfer/fix13.b64.part04'
+      - 'firmware_snapshots/.transfer/trigger-fix13'
 
 permissions:
   contents: write
@@ -13,25 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Assemble when all transfer parts are present
+      - name: Assemble and verify FIX13
         shell: bash
         run: |
           set -euo pipefail
           d=firmware_snapshots/.transfer
-          for f in             fix13.b64.part01 fix13.b64.part02 fix13.b64.part03 fix13.b64.part04             fix14.b64.part01 fix14.b64.part02 fix14.b64.part03 fix14.b64.part04
-          do
-            [ -f "$d/$f" ] || { echo "Waiting for $f"; exit 0; }
-          done
-
           cat "$d"/fix13.b64.part{01,02,03,04} | base64 -d > firmware_snapshots/GreenMover_ACTIVE_HANDOFF_TEST1_FIX13_FINE_GAIN_1650_1700.zip
-          cat "$d"/fix14.b64.part{01,02,03,04} | base64 -d > firmware_snapshots/GreenMover_ACTIVE_HANDOFF_TEST1_FIX14_PASSIVE_BEMF_CAL.zip
-
           echo "a482c12123919b7a86366abf15becf7a48c377d1694feb65115e921dc7576043  firmware_snapshots/GreenMover_ACTIVE_HANDOFF_TEST1_FIX13_FINE_GAIN_1650_1700.zip" | sha256sum -c -
-          echo "63c3435c701afff65e21fb0bc87c8b2d73b4653085ed9670d27ba2b5d60bd3ae  firmware_snapshots/GreenMover_ACTIVE_HANDOFF_TEST1_FIX14_PASSIVE_BEMF_CAL.zip" | sha256sum -c -
-
           rm -rf "$d"
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add firmware_snapshots
-          git commit -m "Publish FIX13 and FIX14 firmware snapshots"
+          git commit -m "Publish FIX13 firmware snapshot"
           git push
