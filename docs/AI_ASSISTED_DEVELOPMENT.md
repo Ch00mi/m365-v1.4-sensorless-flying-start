@@ -47,7 +47,3 @@ Two examples show why this mattered:
 2. Active handoff current initially looked like an angle/tuning issue, but the angle sweep and later independent DMM measurement redirected the investigation toward absolute BEMF amplitude scaling.
 
 The physical hardware remained the arbiter of truth.
-
-## Attribution
-
-Mentioning AI assistance is intended as development-method transparency. It does not alter the licensing or attribution obligations of any upstream firmware from which modified code may be derived.
