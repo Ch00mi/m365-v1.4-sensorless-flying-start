@@ -1,8 +1,37 @@
 --- FIX13/Core/Inc/config.h
 +++ FIX14/Core/Inc/config.h
-@@
-+#define PV_PHASE_NOMINAL_FULL_SCALE_MV 15400
-+#define PV_PHASE_CAL_GAIN_PERMILLE 2520
-@@
--#define PV_ACTIVE_VOLTAGE_SCALE_PERMILLE 1650
-+#define PV_ACTIVE_VOLTAGE_SCALE_PERMILLE 1000
+@@ -73,8 +73,21 @@
+  * Vphase = Vadc * (22+6)/6 = Vadc * 14/3.
+  * Nominal 3.300 V ADC reference gives 15.400 V phase-terminal full scale.
+  */
+-#define PV_PHASE_FULL_SCALE_MV          15400UL
+-#define PV_ADC_FULL_SCALE_COUNTS         4095UL
++/*
++ * FIX14 passive absolute phase-voltage calibration.
++ * The V1.4 schematic nominal 22k/6k calculation gives 15.4 V full scale,
++ * but the real controller + motor measurement is lower by ~2.52x:
++ *   Green Mover at ~60 rpm: 5.4..5.5 Vrms line-line
++ *   expected alpha/beta phase-peak magnitude: ~4.41..4.49 V
++ *   previous firmware reported: ~1.71..1.81 V
++ * Keep the nominal value visible and apply an explicit empirical gain so the
++ * calibration can be verified/tuned independently of the schematic assumption.
++ */
++#define PV_PHASE_NOMINAL_FULL_SCALE_MV   15400UL
++#define PV_PHASE_CAL_GAIN_PERMILLE        2520UL
++#define PV_PHASE_FULL_SCALE_MV \
++  ((PV_PHASE_NOMINAL_FULL_SCALE_MV * PV_PHASE_CAL_GAIN_PERMILLE + 500UL) / 1000UL)
++#define PV_ADC_FULL_SCALE_COUNTS           4095UL
+ 
+ /* Vector must be above this before angle/speed is considered meaningful. */
+ #define PV_BEMF_VALID_MIN_MV              350U
+@@ -209,8 +222,8 @@
+  * inside the existing 1.2 A current and Uabs=300 safety limits. Continue only
+  * in small steps: 1650 first, then 1700 only after reviewing the 1650 pulse.
+  * Requests are hard-clamped to 1300..1700 permille before every ARM. */
+-#define PV_ACT_SCALE_MIN_PERMILLE               1300U
+-#define PV_ACT_SCALE_MAX_PERMILLE               1700U
++#define PV_ACT_SCALE_MIN_PERMILLE               1000U
++#define PV_ACT_SCALE_MAX_PERMILLE               1000U
+ /* FIX13 keeps the voltage-vector angle correction locked to 0.00 electrical degree.
+  * Keep the runtime variable for diagnostics, but any nonzero write is clamped
+  * back to zero so the gain sweep changes amplitude only. */
