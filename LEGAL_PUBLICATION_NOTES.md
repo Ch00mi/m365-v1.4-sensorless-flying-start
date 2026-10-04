@@ -2,17 +2,39 @@
 
 This repository is intentionally documentation-first.
 
+## Current license finding
+
+The broader `EBiCS_Firmware` repository explicitly states that it is distributed under the **GNU GPL version 3 or later**.
+
+However, the separate `EBiCS_motor_FOC` repository — the motor-control library whose code structure closely matches the base used by this project — currently has **no LICENSE file and no explicit license statement in its README**.
+
+This is not merely an unnoticed ambiguity: there is already an open upstream issue asking specifically for a license:
+
+https://github.com/EBiCS/EBiCS_motor_FOC/issues/2
+
+That issue has remained open since 2022. A 2024 comment in the same issue quotes GitHub's default-copyright rule: without a license, the author retains the normal exclusive rights and public users are not automatically granted general redistribution/derivative-work rights.
+
+The current SmartESC_STM32_v3 master also references `EBiCS_motor_FOC` directly as a git submodule.
+
+Therefore, while the surrounding EBiCS/SmartESC ecosystem is clearly community/open-source oriented, the safest reading for the specific `EBiCS_motor_FOC` source is:
+
+> **publicly viewable and forkable on GitHub, but redistribution of a modified copy is not clearly licensed yet.**
+
+This repository therefore does not attach the complete modified motor-control source at this time.
+
 ## What is intentionally NOT included
 
 ### Firmware source snapshots
 
-The experimental `motor.c` lineage appears to be derived from the public EBiCS / SmartESC M365 firmware family. The exact upstream licensing/provenance of the specific `EBiCS_motor_FOC` base used for these experiments has not yet been established with enough confidence for public redistribution.
+The experimental `motor.c` lineage is derived from the public EBiCS / SmartESC M365 firmware family and contains substantial code corresponding to the `EBiCS_motor_FOC` motor-control base.
 
-Do not publish the local firmware ZIP archive until the applicable upstream license or explicit permission is confirmed.
+The last confirmed tested revision is fully identified by filename and cryptographic hashes in:
 
-The broader EBiCS firmware lineage contains GPLv3-or-later licensing statements, but the separate current `EBiCS_motor_FOC` repository does not presently expose an unambiguous license file in the material reviewed for this project. Do not assume the license of a related repository automatically applies to this exact source lineage.
+`docs/LAST_TESTED_FIRMWARE.md`
 
-If the applicable upstream is confirmed as GPLv3-or-later, redistribution can be done while preserving copyright/license notices, including the license, marking modifications, and licensing covered modified source under compatible GPL terms.
+The source archive is preserved locally but not redistributed here until the applicable upstream license or explicit permission is confirmed.
+
+If the upstream authors later clarify that `EBiCS_motor_FOC` is GPLv3-or-later (or another open-source license), the source can be added while preserving the applicable copyright/license notices, marking modifications, and following that license's redistribution requirements.
 
 ### Third-party hardware/schematic images
 
@@ -28,7 +50,8 @@ Prefer linking to the original source, obtaining permission, or replacing it wit
 - original tables and reconstructed traces;
 - factual hardware pin/channel mappings;
 - links and citations to prior art;
-- a description of algorithms and experimental procedure.
+- a description of algorithms and experimental procedure;
+- hashes and technical identity of the preserved last-tested firmware.
 
 ## Important
 
@@ -38,12 +61,12 @@ A research/quotation exception may exist in some jurisdictions for limited uses,
 
 ## Recommended path to public source release
 
-1. Identify the exact upstream repository/commit used as the firmware base.
-2. Confirm the license applicable to `EBiCS_motor_FOC`.
-3. Preserve all copyright/license notices.
+1. Preserve the local FIX13/FIX14 archives and hashes.
+2. Obtain a clear license statement for `EBiCS_motor_FOC`, ideally by resolution of the existing upstream license issue.
+3. Preserve all upstream copyright/license notices.
 4. Add a clear `MODIFICATIONS.md` describing this project's changes and dates.
 5. If GPL-covered, release the covered modified source under the applicable GPL terms and include the license.
-6. If no license can be established, ask the copyright holder/maintainer for explicit permission before redistributing the derived files.
-7. Until then, publish this documentation/data repository and provide pseudocode or independently written explanations instead of the complete derived source.
+6. If another open-source license is selected, follow its attribution/redistribution conditions.
+7. Until then, keep this public repository documentation/data-first.
 
 This note is a practical publication precaution, not legal advice.
