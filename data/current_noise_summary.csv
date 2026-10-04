@@ -1,0 +1,5 @@
+stage,channel,peak_min_ma,peak_max_ma,avg_abs_min_ma,avg_abs_max_ma,note
+FIX7_before_settling_fix,A,912,1026,223,239,many >300; many >600; some >900
+FIX7_before_settling_fix,B,152,190,42,49,none >300
+FIX8_after_A_28p5_cycles,A,228,342,58,77,normally no >300; none >600/900/1200
+FIX8_after_A_28p5_cycles,B,152,190,53,61,control channel remained clean
