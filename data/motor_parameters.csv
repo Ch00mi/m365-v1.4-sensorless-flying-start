@@ -1,0 +1,9 @@
+parameter,value,unit,note
+pole_pairs,20,count,40 rotor magnets
+line_line_resistance,0.2,ohm,measured
+phase_resistance_model,0.1,ohm,derived
+line_line_inductance,1.21,mH,measured
+phase_inductance_model,0.605,mH,derived
+bemf_constant_line_line_rms,0.09,V/rpm,measured
+flux_linkage,0.035,Wb,estimated
+kv,7.9,rpm/V,estimated
