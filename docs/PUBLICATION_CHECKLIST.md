@@ -18,7 +18,7 @@ Publish:
 - `docs/`
 - `data/`
 - selected original experiment screenshots
-- firmware source only after license/provenance review
+- firmware source and preserved experiment snapshots
 
 ## VESC / motor-control communities
 
