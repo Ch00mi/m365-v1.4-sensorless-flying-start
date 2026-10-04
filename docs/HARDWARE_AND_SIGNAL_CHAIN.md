@@ -102,7 +102,3 @@ During passive acquisition:
 - BEMF was inferred only from open-circuit motor terminal voltage.
 
 This is important when comparing the project to observer-based sensorless systems: the motor was used as a generator before takeover.
-
-## Hardware image provenance
-
-Externally sourced M365 V1.4 hardware/schematic images are intentionally not bundled because their redistribution license was not confirmed. Use original links/permission or replace them with an original diagram before publication.
