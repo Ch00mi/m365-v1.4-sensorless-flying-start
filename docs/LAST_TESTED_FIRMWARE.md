@@ -119,8 +119,8 @@ The controller/ST-Link failure occurred before this calibration experiment was c
 > **FIX13 = last confirmed hardware-tested build.**  
 > **FIX14 = next generated continuation build, not experimentally validated.**
 
-## Why the source archive is not attached publicly yet
+## Public firmware archive
 
-The last tested source is preserved locally and its identity is recorded above, but the complete source archive is not currently redistributed in this public repository because its motor-control base contains code derived from the EBiCS / SmartESC lineage and the separate `EBiCS_motor_FOC` repository does not currently state an explicit redistribution license.
+The preserved experimental firmware states are published under `firmware_snapshots/`.
 
-See `../LEGAL_PUBLICATION_NOTES.md`.
+Use FIX13 as the last hardware-tested reference. FIX14 is the next generated continuation and must be treated as unvalidated until it is tested on replacement hardware.
