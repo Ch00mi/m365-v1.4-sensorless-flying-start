@@ -1,0 +1,2 @@
+test,mechanical_rpm,dmm_vll_rms_min_v,dmm_vll_rms_max_v,firmware_bemf_mag_min_v,firmware_bemf_mag_max_v,expected_alphabeta_peak_min_v,expected_alphabeta_peak_max_v,note
+approx_60_rpm,60,5.4,5.5,1.711,1.811,4.41,4.49,DMM vs firmware before FIX14
