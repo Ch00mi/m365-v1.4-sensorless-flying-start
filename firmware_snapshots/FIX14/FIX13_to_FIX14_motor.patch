@@ -1,35 +1,44 @@
 --- FIX13/Core/Src/motor.c
 +++ FIX14/Core/Src/motor.c
-@@
- volatile uint16_t pv_dbg_bemf_mag_mv = 0;
-+volatile uint16_t pv_dbg_phase_cal_permille = PV_PHASE_CAL_GAIN_PERMILLE;
-+volatile uint16_t pv_dbg_mag_permille = 0;
-+volatile uint16_t pv_dbg_ll_rms_est_mv = 0;
-@@
--    pv_dbg_phase_a_mv = (uint16_t)u32_min(65535u, pv_phase_adc_to_mv(pv_adc_dma[0]));
--    pv_dbg_phase_b_mv = (uint16_t)u32_min(65535u, pv_phase_adc_to_mv(pv_adc_dma[1]));
--    pv_dbg_phase_c_mv = (uint16_t)u32_min(65535u, pv_phase_adc_to_mv(pv_adc_dma[2]));
-+    int32_t va_mv = (int32_t)pv_phase_adc_to_mv(pv_adc_dma[0]);
-+    int32_t vb_mv = (int32_t)pv_phase_adc_to_mv(pv_adc_dma[1]);
-+    int32_t vc_mv = (int32_t)pv_phase_adc_to_mv(pv_adc_dma[2]);
-+
-+    va_mv = (va_mv * PV_PHASE_CAL_GAIN_PERMILLE) / 1000;
-+    vb_mv = (vb_mv * PV_PHASE_CAL_GAIN_PERMILLE) / 1000;
-+    vc_mv = (vc_mv * PV_PHASE_CAL_GAIN_PERMILLE) / 1000;
-+
-+    pv_dbg_phase_a_mv = (uint16_t)i32_clamp(va_mv, 0, 65535);
-+    pv_dbg_phase_b_mv = (uint16_t)i32_clamp(vb_mv, 0, 65535);
-+    pv_dbg_phase_c_mv = (uint16_t)i32_clamp(vc_mv, 0, 65535);
-@@
-     const int32_t common_mv = (va_mv + vb_mv + vc_mv) / 3;
-@@
-     pv_dbg_bemf_mag_mv = (uint16_t)u32_min(65535u, bemf_mag_mv);
-+    pv_dbg_mag_permille = (uint16_t)u32_min(
-+        65535u,
-+        (PV_PHASE_CAL_GAIN_PERMILLE * bemf_mag_mv) /
-+            u32_max(1u, PV_PHASE_NOMINAL_FULL_SCALE_MV)
-+    );
-+    pv_dbg_ll_rms_est_mv = (uint16_t)u32_min(
-+        65535u,
-+        (bemf_mag_mv * 1225u) / 1000u
-+    );
+@@ -200,6 +200,9 @@
+ volatile int32_t  pv_dbg_dir = 0;
+ volatile uint32_t pv_dbg_vector_valid = 0;
+ volatile uint32_t pv_dbg_expected_mag_mv = 0;
++volatile uint32_t pv_dbg_mag_permille = 0;
++volatile uint32_t pv_dbg_ll_rms_est_mv = 0;
++volatile uint32_t pv_dbg_phase_cal_permille = PV_PHASE_CAL_GAIN_PERMILLE;
+ volatile uint32_t pv_dbg_mag_percent = 0;
+ volatile uint32_t pv_dbg_clip_low_mask = 0;
+ volatile uint32_t pv_dbg_clip_high_mask = 0;
+@@ -508,7 +511,7 @@
+  * in Live Expressions before ARM. The request is clamped to 130..170% and the
+  * applied value is latched with each one-shot run. Start at 1650 permille;
+  * test 1700 only after reviewing the 1650 pulse. */
+-volatile uint32_t pv_act_voltage_scale_permille = 1650U;
++volatile uint32_t pv_act_voltage_scale_permille = 1000U;
+ volatile uint32_t pv_act_scale_applied_permille = 0U;
+ volatile uint32_t pv_act_scale_clamp_count = 0U;
+ volatile int32_t  pv_act_scaled_ud = 0;
+@@ -1829,12 +1832,22 @@
+       (uint32_t)(((uint64_t)pv_dbg_erpm_abs *
+                   (uint64_t)MOTOR_FLUX_LINKAGE_UWB * 6283ULL) /
+                  60000000ULL);
++  /* Direct comparison helpers for FIX14 calibration:
++   *  - mag_permille: measured alpha/beta magnitude / flux-model expectation
++   *  - ll_rms_est: for a balanced sinusoidal three-phase BEMF,
++   *      V_LL_RMS = |V_alpha_beta| * sqrt(3/2) ~= 1.224745 * magnitude.
++   */
++  pv_dbg_ll_rms_est_mv = (uint32_t)(((uint64_t)mag * 1224745ULL + 500000ULL) / 1000000ULL);
+   if (pv_dbg_expected_mag_mv > 0U) {
+     uint32_t pct = (mag * 100U) / pv_dbg_expected_mag_mv;
+     if (pct > 999U) pct = 999U;
+     pv_dbg_mag_percent = pct;
++    uint32_t pm = (uint32_t)(((uint64_t)mag * 1000ULL) / pv_dbg_expected_mag_mv);
++    if (pm > 9999U) pm = 9999U;
++    pv_dbg_mag_permille = pm;
+   } else {
+     pv_dbg_mag_percent = 0U;
++    pv_dbg_mag_permille = 0U;
+   }
+ 
+   /* Coherent one-shot snapshot: only written when explicitly requested. */
