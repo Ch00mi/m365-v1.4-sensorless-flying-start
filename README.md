@@ -1,7 +1,5 @@
 # GreenMover / Xiaomi M365 V1.4 — Passive Sensorless Flying-Start FOC
 
-> **PUBLICATION NOTE:** This repository intentionally excludes experimental firmware source ZIPs and externally sourced hardware/schematic images until their upstream licensing/provenance is confirmed. See `LEGAL_PUBLICATION_NOTES.md`.
-
 > **Status:** experimental research project, paused after test-controller / ST-Link hardware damage.  
 > **Last confirmed hardware-tested firmware:** `FIX13_FINE_GAIN_1650_1700`. See `docs/LAST_TESTED_FIRMWARE.md`.  
 > **Last technical milestone:** passive BEMF amplitude calibration was identified as the next blocking task (`FIX14_PASSIVE_BEMF_CAL`).  
@@ -159,7 +157,7 @@ See `docs/HARDWARE_AND_SIGNAL_CHAIN.md`.
 - `docs/AI_ASSISTED_DEVELOPMENT.md` — transparent development-method note.
 - `data/*.csv` — structured test data reconstructed from the experiment log.
 - `forum/ENDLESS_SPHERE_POST.md` — long-form forum post ready to edit/publish.
-- `firmware_snapshots/README.md` — snapshot lineage and publication/license warning.
+- `firmware_snapshots/README.md` — firmware snapshot lineage and archive guide.
 
 ## Firmware lineage at a glance
 
@@ -236,13 +234,8 @@ Relevant references:
 
 The interesting contribution here is applying passive three-phase terminal-voltage sensing and PLL acquisition specifically to stock M365 V1.4 hardware, then instrumenting the first few hundred microseconds of active takeover.
 
-## Publication recommendation
+## Community / publication
 
-For community value, publish:
-
-1. `forum/ENDLESS_SPHERE_POST.md` as the main readable project log.
-2. This README and `docs/` as the durable engineering record.
-3. `data/` so other developers can independently analyze the test series.
-4. Firmware snapshots only after the upstream motor-control library's license is clarified.
+The repository is intended to be a complete engineering record: documentation, measured data, firmware lineage and preserved experimental firmware states are published together so others can reproduce the reasoning and continue the work.
 
 The most useful part of this project is not a claim that "it works"; it is the sequence of measurements showing **which hypotheses were eliminated and why**.
